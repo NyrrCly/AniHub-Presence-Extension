@@ -8,7 +8,7 @@ export default defineConfig({
   modules: ['@wxt-dev/auto-icons'],
   manifest: {
     name: "AniHub Presence Extension",
-    version: "1.0.0",
+    version: "1.0.2",
     permissions: ["storage", "activeTab"],
     host_permissions: [
       "*://anihub.in.ua/*",
