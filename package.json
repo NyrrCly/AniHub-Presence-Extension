@@ -1,6 +1,6 @@
 {
   "name": "anihub-presence-extension",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "AniHub Presence Extension is a Discord Rich Presence application for AniHub",
   "main": "dist/index.js",
   "author": {
@@ -16,6 +16,7 @@
     "postinstall": "wxt prepare"
   },
   "devDependencies": {
+    "@wxt-dev/auto-icons": "^1.1.2",
     "prettier": "^3.9.6",
     "typescript": "^6.0.3",
     "wxt": "^0.21.4"

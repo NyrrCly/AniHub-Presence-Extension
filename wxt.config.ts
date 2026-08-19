@@ -5,6 +5,7 @@ export default defineConfig({
   suppressWarnings: {
     firefoxDataCollection: true,
   },
+  modules: ['@wxt-dev/auto-icons'],
   manifest: {
     name: "AniHub Presence Extension",
     version: "1.0.0",
