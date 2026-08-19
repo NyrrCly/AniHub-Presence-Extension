@@ -4,7 +4,7 @@ import { fetchAnimeDetails } from "@/utils/api.js";
 import { initUrlObserver } from "@/utils/urlObserver.js";
 import { EpisodeObserver } from "@/utils/episodeObserver.js";
 import { initIframeVideoTracker } from "@/utils/iframeTracker.js"
-import type { VideoState } from "@/types/types";
+import type { AnimeInfo, AnimePageData, VideoState } from "@/types/types";
 
 export default defineContentScript({
   matches: ["*://anihub.in.ua/*", "*://*.ashdi.vip/*"],
@@ -26,20 +26,22 @@ export default defineContentScript({
     const handleRoute = async () => {
       const pathname = window.location.pathname;
       const userData = extractUserData();
+      let animeData: AnimeInfo;
+      let pageInfo: AnimePageData;
 
       if (!pathname.includes("/anime/")) {
         clearPresence();
       }
 
-      const { animeId, episode } = extractPageData();
-      if (!animeId) {
+      pageInfo = extractPageData();
+      if (!pageInfo.animeId) {
         episodeObserver.stop();
         return;
       }
 
-      const animeData = await fetchAnimeDetails(animeId);
+      animeData = await fetchAnimeDetails(pageInfo.animeId);
       if (animeData) {
-        watchPresence(userData, animeData, episode);
+        watchPresence(userData, animeData, pageInfo.episode);
       }
 
       browser.runtime.onMessage.addListener((message) => {
@@ -49,13 +51,17 @@ export default defineContentScript({
           return
         }
 
-        watchPresence(userData, animeData, episode, videoState)
+        watchPresence(userData, animeData, pageInfo.episode, videoState)
       });
 
       episodeObserver.start(async (newAnimeId, newEpisode) => {
-        const updatedData = await fetchAnimeDetails(newAnimeId);
-        if (updatedData) {
-          watchPresence(userData, updatedData, newEpisode);
+        pageInfo = {
+          animeId: newAnimeId,
+          episode: newEpisode,
+        }
+        animeData = await fetchAnimeDetails(newAnimeId);
+        if (animeData) {
+          watchPresence(userData, animeData, newEpisode);
         }
       });
     };
