@@ -1,0 +1,9 @@
+# Ignore artifacts:
+.idea/**
+build
+coverage
+README.md
+package.json
+package-lock.json
+.output/**
+.wxt/**
