@@ -1,14 +1,24 @@
 {
-  "name": "${PROJECT_NAME}",
+  "name": "anihub-presence-extension",
   "version": "1.0.0",
-  "description": "",
+  "description": "AniHub Presence Extension is a Discord Rich Presence application for AniHub",
   "main": "dist/index.js",
-  "scripts": {
-    "build": "tsc"
+  "author": {
+    "name": "Nyrrcly"
   },
-  "dependencies": {},
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "postinstall": "wxt prepare"
+  },
   "devDependencies": {
-    "typescript": "^6.0.3"
+    "prettier": "^3.9.6",
+    "typescript": "^6.0.3",
+    "wxt": "^0.21.4"
   },
   "private": true
 }

@@ -1,12 +1,15 @@
 {
+  "extends": "./.wxt/tsconfig.json",
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
+    "rootDir": "./src",
     "outDir": "dist"
   },
-  "include": ["src"]
+  "include": ["src/**/*", ".wxt/wxt.d.ts"]
 }
