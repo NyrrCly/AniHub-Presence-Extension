@@ -10,7 +10,8 @@ export async function fetchAnimeDetails(animeId: string): Promise<any> {
   }
 }
 
-export function sendPresenceUpdate(presence: PresenceData | null) {
+export async function sendPresenceUpdate(presence: PresenceData | null) {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   browser.runtime.sendMessage({
     type: "presence_update",
     payload: presence,

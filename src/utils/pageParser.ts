@@ -1,6 +1,8 @@
 import type { AnimePageData, UserData } from "@/types/types.js";
 
-export function extractPageData(): AnimePageData {
+export async function extractPageData(): Promise<AnimePageData> {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
   const animeId = window.location.pathname.match(/\w+$/)?.[0];
   const episodeEl = document.querySelector(
     "span.text-xs.lg\\:text-sm.font-medium",

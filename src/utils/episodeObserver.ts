@@ -4,19 +4,16 @@ export class EpisodeObserver {
   private observer: MutationObserver | null = null;
   private lastEpisode: string = "";
 
-  start(onEpisodeChange: (animeId: string, episode: string) => void) {
+  async start(onEpisodeChange: (animeId: string, episode: string) => void) {
     this.stop();
 
-    const initial = extractPageData();
+    const initial = await extractPageData();
     this.lastEpisode = initial.episode;
 
-    this.observer = new MutationObserver(() => {
-      const { animeId, episode } = extractPageData();
+    this.observer = new MutationObserver(async () => {
+      const { animeId, episode } = await extractPageData();
 
       if (animeId && episode && episode !== this.lastEpisode) {
-        console.log(
-          `[AniHub Presence] Серія змінилася: ${this.lastEpisode} -> ${episode}`,
-        );
         this.lastEpisode = episode;
         onEpisodeChange(animeId, episode);
       }

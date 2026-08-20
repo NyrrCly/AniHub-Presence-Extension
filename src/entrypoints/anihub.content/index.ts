@@ -33,7 +33,7 @@ export default defineContentScript({
         clearPresence();
       }
 
-      pageInfo = extractPageData();
+      pageInfo = await extractPageData();
       if (!pageInfo.animeId) {
         episodeObserver.stop();
         return;
@@ -68,9 +68,7 @@ export default defineContentScript({
     };
 
     initUrlObserver(() => {
-      setTimeout(() => {
         handleRoute();
-      }, 1000);
     });
   },
 });
