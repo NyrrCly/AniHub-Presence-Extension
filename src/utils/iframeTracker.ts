@@ -10,6 +10,8 @@ export function initIframeVideoTracker() {
 }
 
 function setupListeners(video: HTMLVideoElement) {
+  let seekTimeout: any;
+
   const sendVideoState = () => {
     browser.runtime.sendMessage({
       type: "video_state_update",
@@ -24,6 +26,23 @@ function setupListeners(video: HTMLVideoElement) {
   video.addEventListener("play", sendVideoState);
   video.addEventListener("pause", sendVideoState);
   video.addEventListener("seeked", sendVideoState);
+
+  video.addEventListener('seeked', () => {
+    clearTimeout(seekTimeout);
+
+    seekTimeout = setTimeout(() => {
+      sendVideoState();
+    }, 300);
+  });
+
+  video.addEventListener('timeupdate', () => {
+    if (video.paused) {
+      clearTimeout(seekTimeout);
+      seekTimeout = setTimeout(() => {
+        sendVideoState()
+      }, 300);
+    }
+  });
 
   if (!video.paused) {
     sendVideoState();
