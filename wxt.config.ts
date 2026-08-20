@@ -15,6 +15,8 @@ export default defineConfig({
       "*://*.anihub.in.ua/*",
       "http://localhost:3000/*",
       "*://*.ashdi.vip/*",
+      "*://*.fenixplay.xyz/*",
+      "*://*.moonanime.art/*"
     ],
     browser_specific_settings: {
       gecko: {

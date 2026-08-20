@@ -7,7 +7,7 @@ import { initIframeVideoTracker } from "@/utils/iframeTracker.js"
 import type { AnimeInfo, AnimePageData, VideoState } from "@/types/types";
 
 export default defineContentScript({
-  matches: ["*://anihub.in.ua/*", "*://*.ashdi.vip/*"],
+  matches: ["*://anihub.in.ua/*", "*://*.ashdi.vip/*", "*://*.fenixplay.xyz/*", "*://*.moonanime.art/*"],
   allFrames: true,
   main() {
     console.log("[AniHub Presence] Content Script Initialized");
@@ -55,6 +55,7 @@ export default defineContentScript({
       });
 
       episodeObserver.start(async (newAnimeId, newEpisode) => {
+        clearPresence();
         pageInfo = {
           animeId: newAnimeId,
           episode: newEpisode,
