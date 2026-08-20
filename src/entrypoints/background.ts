@@ -25,10 +25,12 @@ export default defineBackground(() => {
         const tabId = sender.tab?.id;
 
         if (tabId) {
-          browser.tabs.sendMessage(tabId, {
-            type: "video_state_from_bg",
-            payload: message.payload
-          }).catch(() => {});
+          browser.tabs
+            .sendMessage(tabId, {
+              type: "video_state_from_bg",
+              payload: message.payload,
+            })
+            .catch(() => {});
         }
         break;
       }

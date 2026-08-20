@@ -33,8 +33,8 @@ export function watchPresence(
   let startTimestamp;
   let endTimestamp;
   if (videoState) {
-    startTimestamp = Math.floor(now - (videoState.currentTime * 1000));
-    endTimestamp = Math.floor(startTimestamp + (videoState.duration * 1000));
+    startTimestamp = Math.floor(now - videoState.currentTime * 1000);
+    endTimestamp = Math.floor(startTimestamp + videoState.duration * 1000);
   }
 
   sendPresenceUpdate({

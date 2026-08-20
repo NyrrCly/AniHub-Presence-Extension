@@ -5,7 +5,7 @@ export default defineConfig({
   suppressWarnings: {
     firefoxDataCollection: true,
   },
-  modules: ['@wxt-dev/auto-icons'],
+  modules: ["@wxt-dev/auto-icons"],
   manifest: {
     name: "AniHub Presence Extension",
     version: "1.0.2",
@@ -16,14 +16,14 @@ export default defineConfig({
       "http://localhost:3000/*",
       "*://*.ashdi.vip/*",
       "*://*.fenixplay.xyz/*",
-      "*://*.moonanime.art/*"
+      "*://*.moonanime.art/*",
     ],
     browser_specific_settings: {
       gecko: {
         id: "anihub-presence@ua.com",
         data_collection_permissions: {
-          required: ["none"]
-        }
+          required: ["none"],
+        },
       },
     },
   },

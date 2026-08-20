@@ -27,7 +27,7 @@ function setupListeners(video: HTMLVideoElement) {
   video.addEventListener("pause", sendVideoState);
   video.addEventListener("seeked", sendVideoState);
 
-  video.addEventListener('seeked', () => {
+  video.addEventListener("seeked", () => {
     clearTimeout(seekTimeout);
 
     seekTimeout = setTimeout(() => {
@@ -35,11 +35,11 @@ function setupListeners(video: HTMLVideoElement) {
     }, 300);
   });
 
-  video.addEventListener('timeupdate', () => {
+  video.addEventListener("timeupdate", () => {
     if (video.paused) {
       clearTimeout(seekTimeout);
       seekTimeout = setTimeout(() => {
-        sendVideoState()
+        sendVideoState();
       }, 300);
     }
   });

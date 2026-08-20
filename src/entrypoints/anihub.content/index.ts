@@ -3,11 +3,16 @@ import { extractPageData, extractUserData } from "@/utils/pageParser.js";
 import { fetchAnimeDetails } from "@/utils/api.js";
 import { initUrlObserver } from "@/utils/urlObserver.js";
 import { EpisodeObserver } from "@/utils/episodeObserver.js";
-import { initIframeVideoTracker } from "@/utils/iframeTracker.js"
+import { initIframeVideoTracker } from "@/utils/iframeTracker.js";
 import type { AnimeInfo, AnimePageData, VideoState } from "@/types/types";
 
 export default defineContentScript({
-  matches: ["*://anihub.in.ua/*", "*://*.ashdi.vip/*", "*://*.fenixplay.xyz/*", "*://*.moonanime.art/*"],
+  matches: [
+    "*://anihub.in.ua/*",
+    "*://*.ashdi.vip/*",
+    "*://*.fenixplay.xyz/*",
+    "*://*.moonanime.art/*",
+  ],
   allFrames: true,
   main() {
     console.log("[AniHub Presence] Content Script Initialized");
@@ -18,7 +23,7 @@ export default defineContentScript({
       clearPresence();
     });
 
-    if (window.location.hostname.includes('ashdi.vip')) {
+    if (window.location.hostname.includes("ashdi.vip")) {
       initIframeVideoTracker();
       return;
     }
@@ -48,10 +53,10 @@ export default defineContentScript({
         const videoState: VideoState = message.payload;
         if (videoState.isPaused) {
           clearPresence();
-          return
+          return;
         }
 
-        watchPresence(userData, animeData, pageInfo.episode, videoState)
+        watchPresence(userData, animeData, pageInfo.episode, videoState);
       });
 
       episodeObserver.start(async (newAnimeId, newEpisode) => {
@@ -59,7 +64,7 @@ export default defineContentScript({
         pageInfo = {
           animeId: newAnimeId,
           episode: newEpisode,
-        }
+        };
         animeData = await fetchAnimeDetails(newAnimeId);
         if (animeData) {
           watchPresence(userData, animeData, newEpisode);
@@ -68,7 +73,7 @@ export default defineContentScript({
     };
 
     initUrlObserver(() => {
-        handleRoute();
+      handleRoute();
     });
   },
 });
