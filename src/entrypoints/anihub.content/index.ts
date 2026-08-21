@@ -1,10 +1,10 @@
-import { mainPresence, watchPresence } from "@/utils/presence.js";
-import { extractPageData, extractUserData } from "@/utils/pageParser.js";
-import { fetchAnimeDetails } from "@/utils/api.js";
+import { extractEpisodeData, extractUserData } from "@/utils/pageParser.js";
+import { fetchAnimeDetails } from "@/utils/services/api.js";
 import { initUrlObserver } from "@/utils/urlObserver.js";
-import { EpisodeObserver } from "@/utils/episodeObserver.js";
 import { initIframeVideoTracker } from "@/utils/iframeTracker.js";
-import type { AnimeInfo, AnimePageData, VideoState } from "@/types/types";
+import { watchPresence } from "@/utils/presence";
+import type { AnimeData, VideoState } from "@/types/types.js";
+import { hosts } from "@/constants/host.js";
 
 export default defineContentScript({
   matches: [
@@ -15,6 +15,11 @@ export default defineContentScript({
   ],
   allFrames: true,
   main() {
+    if (hosts.some((host) => window.location.hostname.includes(host))) {
+      initIframeVideoTracker();
+      return;
+    }
+
     console.log("[AniHub Presence] Content Script Initialized");
 
     const episodeObserver = new EpisodeObserver();
@@ -23,31 +28,23 @@ export default defineContentScript({
       clearPresence();
     });
 
-    if (window.location.hostname.includes("ashdi.vip")) {
-      initIframeVideoTracker();
-      return;
-    }
+    initUrlObserver(() => {
+      handlePresence();
+    });
 
-    const handleRoute = async () => {
-      const pathname = window.location.pathname;
-      const userData = extractUserData();
-      let animeData: AnimeInfo;
-      let pageInfo: AnimePageData;
+    async function handlePresence() {
+      let animeData: AnimeData;
+      let episode: string;
 
-      if (!pathname.includes("/anime/")) {
+      if (!window.location.pathname.includes("/anime/")) {
         clearPresence();
-      }
-
-      pageInfo = await extractPageData();
-      if (!pageInfo.animeId) {
-        episodeObserver.stop();
         return;
       }
 
-      animeData = await fetchAnimeDetails(pageInfo.animeId);
-      if (animeData) {
-        watchPresence(userData, animeData, pageInfo.episode);
-      }
+      const animeId = window.location.pathname.match(/\w+$/)?.[0]!;
+      const userData = extractUserData();
+      animeData = await fetchAnimeDetails(animeId);
+      episode = await extractEpisodeData();
 
       browser.runtime.onMessage.addListener((message) => {
         const videoState: VideoState = message.payload;
@@ -55,25 +52,20 @@ export default defineContentScript({
           clearPresence();
           return;
         }
-
-        watchPresence(userData, animeData, pageInfo.episode, videoState);
+        watchPresence(userData, animeData, episode, videoState);
       });
 
-      episodeObserver.start(async (newAnimeId, newEpisode) => {
-        clearPresence();
-        pageInfo = {
-          animeId: newAnimeId,
-          episode: newEpisode,
-        };
-        animeData = await fetchAnimeDetails(newAnimeId);
-        if (animeData) {
-          watchPresence(userData, animeData, newEpisode);
-        }
-      });
-    };
+      if (episode !== "-1") {
+        watchPresence(userData, animeData, episode);
+      }
 
-    initUrlObserver(() => {
-      handleRoute();
-    });
+      episodeObserver.start(async (newEpisode) => {
+        episode = newEpisode;
+        animeData = await fetchAnimeDetails(
+          window.location.pathname.match(/\w+$/)?.[0]!,
+        );
+        watchPresence(userData, animeData, episode);
+      });
+    }
   },
 });

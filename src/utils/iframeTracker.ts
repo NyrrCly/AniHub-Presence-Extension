@@ -1,16 +1,14 @@
-export function initIframeVideoTracker() {
-  const checkVideo = setInterval(() => {
-    const video = document.querySelector("video");
-
-    if (video) {
-      clearInterval(checkVideo);
-      setupListeners(video);
-    }
-  }, 500);
+export async function initIframeVideoTracker() {
+  let video: HTMLVideoElement | null = null;
+  while (!video || Number.isNaN(video.duration)) {
+    video = document.querySelector<HTMLVideoElement>("video");
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  setupListeners(video);
 }
 
 function setupListeners(video: HTMLVideoElement) {
-  let seekTimeout: any;
+  let seekTimeout: ReturnType<typeof setTimeout>;
 
   const sendVideoState = () => {
     browser.runtime.sendMessage({
@@ -25,14 +23,13 @@ function setupListeners(video: HTMLVideoElement) {
 
   video.addEventListener("play", sendVideoState);
   video.addEventListener("pause", sendVideoState);
-  video.addEventListener("seeked", sendVideoState);
 
   video.addEventListener("seeked", () => {
     clearTimeout(seekTimeout);
 
     seekTimeout = setTimeout(() => {
       sendVideoState();
-    }, 300);
+    }, 700);
   });
 
   video.addEventListener("timeupdate", () => {
@@ -40,7 +37,7 @@ function setupListeners(video: HTMLVideoElement) {
       clearTimeout(seekTimeout);
       seekTimeout = setTimeout(() => {
         sendVideoState();
-      }, 300);
+      }, 1500);
     }
   });
 

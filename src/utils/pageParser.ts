@@ -1,15 +1,15 @@
-import type { AnimePageData, UserData } from "@/types/types.js";
+import type { UserData } from "@/types/types.js";
 
-export async function extractPageData(): Promise<AnimePageData> {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const animeId = window.location.pathname.match(/\w+$/)?.[0];
-  const episodeEl = document.querySelector(
-    "span.text-xs.lg\\:text-sm.font-medium",
-  );
-  const episode = episodeEl?.textContent?.trim().match(/\d+/)?.[0] ?? "-1";
-
-  return { animeId, episode };
+export async function extractEpisodeData(): Promise<string> {
+  let episode = "-1";
+  while (episode === "-1") {
+    const episodeEl = document.querySelector(
+      "span.text-xs.lg\\:text-sm.font-medium",
+    );
+    episode = episodeEl?.textContent?.trim().match(/\d+/)?.[0] || "-1";
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  return episode;
 }
 
 export function extractUserData(): UserData {

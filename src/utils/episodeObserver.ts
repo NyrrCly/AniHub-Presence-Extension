@@ -1,21 +1,21 @@
-import { extractPageData } from "./pageParser";
+import { extractEpisodeData } from "./pageParser";
 
 export class EpisodeObserver {
   private observer: MutationObserver | null = null;
   private lastEpisode: string = "";
 
-  async start(onEpisodeChange: (animeId: string, episode: string) => void) {
+  async start(onEpisodeChange: (episode: string) => void) {
     this.stop();
 
-    const initial = await extractPageData();
-    this.lastEpisode = initial.episode;
+    const episode = await extractEpisodeData();
+    this.lastEpisode = episode;
 
     this.observer = new MutationObserver(async () => {
-      const { animeId, episode } = await extractPageData();
+      const episode = await extractEpisodeData();
 
-      if (animeId && episode && episode !== this.lastEpisode) {
+      if (episode && episode !== this.lastEpisode) {
         this.lastEpisode = episode;
-        onEpisodeChange(animeId, episode);
+        onEpisodeChange(episode);
       }
     });
 

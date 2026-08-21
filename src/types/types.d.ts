@@ -16,12 +16,7 @@ export interface PresenceData {
   buttons?: { label: string; url: string }[];
 }
 
-export interface AnimePageData {
-  animeId: string | undefined;
-  episode: string;
-}
-
-export interface AnimeInfo {
+export interface AnimeData {
   id: number;
   mal_id: number;
   anilist_id: number;

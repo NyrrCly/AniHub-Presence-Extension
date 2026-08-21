@@ -1,6 +1,4 @@
 export default defineBackground(() => {
-  let currentVideoState = null;
-
   console.log("[AniHub RPC] Background Service Worker Started");
   browser.runtime.onMessage.addListener(async (message, sender) => {
     switch (message.type) {
