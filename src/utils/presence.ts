@@ -21,7 +21,7 @@ export function watchPresence(
 
   sendPresenceUpdate({
     details: animeData.title_ukrainian,
-    state: `Епізоди: ${currentEpisode}/${animeData.episodes_count}`,
+    state: `Епізоди: ${currentEpisode}/${animeData.episodes_count ?? "∞"}`,
     type: 3,
     largeImageKey: animeData.poster_url,
     largeImageText: animeData.title_ukrainian,
