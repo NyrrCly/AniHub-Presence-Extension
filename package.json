@@ -1,6 +1,6 @@
 {
   "name": "anihub-presence-extension",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "AniHub Presence Extension is a Discord Rich Presence application for AniHub",
   "main": "dist/index.js",
   "author": {
