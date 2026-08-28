@@ -15,3 +15,8 @@ We take your data from:
 4. Run .exe file.
 
 Just watch anime, and the activity will work!
+
+### Presence preview
+
+![preview](assets/preview.png)
+![watching-preview](assets/watching-preview.png)
