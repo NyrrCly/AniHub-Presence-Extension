@@ -11,7 +11,7 @@ We take your data from:
 
 1. Download latest extension version from [releases](https://github.com/NyrrCly/AniHub-Presence-Extension/releases).
 2. Add extension to your FireFox.
-3. Download latest server version from [another repository](https://github.com/NyrrCly/AniHub-Presence-Extension/releases).
+3. Download latest server version from [another repository](https://github.com/NyrrCly/AniHub-Presence-Server/releases).
 4. Run .exe file.
 
 Just watch anime, and the activity will work!
