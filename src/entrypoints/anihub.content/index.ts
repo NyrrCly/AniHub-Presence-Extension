@@ -44,7 +44,9 @@ export default defineContentScript({
       const animeId = window.location.pathname.match(/\w+$/)?.[0]!;
       const userData = extractUserData();
       animeData = await fetchAnimeDetails(animeId);
-      episode = await extractEpisodeData();
+      episode = animeData.dubbing_studios.length
+        ? await extractEpisodeData()
+        : "?";
 
       browser.runtime.onMessage.addListener((message) => {
         const videoState: VideoState = message.payload;
