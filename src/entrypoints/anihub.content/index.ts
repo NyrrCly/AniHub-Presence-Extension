@@ -1,4 +1,8 @@
-import { extractEpisodeData, extractUserData } from "@/utils/pageParser.js";
+import {
+  extractDubbingStudio,
+  extractEpisodeData,
+  extractUserData,
+} from "@/utils/pageParser.js";
 import { fetchAnimeDetails } from "@/utils/services/api.js";
 import { initUrlObserver } from "@/utils/urlObserver.js";
 import { initIframeVideoTracker } from "@/utils/iframeTracker.js";
@@ -35,6 +39,7 @@ export default defineContentScript({
     async function handlePresence() {
       let animeData: AnimeData;
       let episode: string;
+      let dubbingStudio: string;
 
       if (!window.location.pathname.includes("/anime/")) {
         clearPresence();
@@ -47,6 +52,7 @@ export default defineContentScript({
       episode = animeData.dubbing_studios.length
         ? await extractEpisodeData()
         : "?";
+      dubbingStudio = await extractDubbingStudio();
 
       browser.runtime.onMessage.addListener((message) => {
         const videoState: VideoState = message.payload;
@@ -54,19 +60,20 @@ export default defineContentScript({
           clearPresence();
           return;
         }
-        watchPresence(userData, animeData, episode, videoState);
+        watchPresence(userData, animeData, episode, dubbingStudio, videoState);
       });
 
-      if (episode !== "-1") {
-        watchPresence(userData, animeData, episode);
+      if (episode !== "-1" && dubbingStudio !== "Unknown") {
+        watchPresence(userData, animeData, episode, dubbingStudio);
       }
 
-      episodeObserver.start(async (newEpisode) => {
+      episodeObserver.start(async (newEpisode, newDubbingStudio) => {
         episode = newEpisode;
+        dubbingStudio = newDubbingStudio;
         animeData = await fetchAnimeDetails(
           window.location.pathname.match(/\w+$/)?.[0]!,
         );
-        watchPresence(userData, animeData, episode);
+        watchPresence(userData, animeData, episode, dubbingStudio);
       });
     }
   },

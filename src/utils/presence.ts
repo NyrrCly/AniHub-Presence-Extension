@@ -9,6 +9,7 @@ export function watchPresence(
   userData: UserData,
   animeData: AnimeData,
   currentEpisode: string,
+  dubbingStudio: string,
   videoState?: VideoState,
 ) {
   const now = Date.now();
@@ -21,7 +22,7 @@ export function watchPresence(
 
   sendPresenceUpdate({
     details: animeData.title_ukrainian,
-    state: `Епізоди: ${currentEpisode}/${animeData.episodes_count ?? "∞"}`,
+    state: `Епізоди: ${currentEpisode}/${animeData.episodes_count ?? "∞"} • ${dubbingStudio}`,
     type: 3,
     largeImageKey: animeData.poster_url,
     largeImageText: animeData.title_ukrainian,

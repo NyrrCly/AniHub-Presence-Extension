@@ -1,21 +1,31 @@
-import { extractEpisodeData } from "./pageParser";
+import { extractDubbingStudio, extractEpisodeData } from "./pageParser";
 
 export class EpisodeObserver {
   private observer: MutationObserver | null = null;
   private lastEpisode: string = "";
+  private lastDubbingStudio: string = "";
 
-  async start(onEpisodeChange: (episode: string) => void) {
+  async start(
+    onEpisodeChange: (episode: string, dubbingStudio: string) => void,
+  ) {
     this.stop();
 
     const episode = await extractEpisodeData();
+    const dubbingStudio = await extractDubbingStudio();
     this.lastEpisode = episode;
+    this.lastDubbingStudio = dubbingStudio;
 
     this.observer = new MutationObserver(async () => {
       const episode = await extractEpisodeData();
+      const dubbingStudio = await extractDubbingStudio();
 
-      if (episode && episode !== this.lastEpisode) {
+      if (
+        (episode && episode !== this.lastEpisode) ||
+        (dubbingStudio && dubbingStudio !== this.lastDubbingStudio)
+      ) {
         this.lastEpisode = episode;
-        onEpisodeChange(episode);
+        this.lastDubbingStudio = dubbingStudio;
+        onEpisodeChange(episode, dubbingStudio);
       }
     });
 
