@@ -12,33 +12,11 @@ export function watchPresence(
   dubbingStudio: string,
   videoState?: VideoState,
 ) {
-  const now = Date.now();
-  let startTimestamp;
-  let endTimestamp;
-  if (videoState) {
-    startTimestamp = Math.floor(now - videoState.currentTime * 1000);
-    endTimestamp = Math.floor(startTimestamp + videoState.duration * 1000);
-  }
-
   sendPresenceUpdate({
-    details: animeData.title_ukrainian,
-    state: `Епізоди: ${currentEpisode}/${animeData.episodes_count ?? "∞"} • ${dubbingStudio}`,
-    type: 3,
-    largeImageKey: animeData.poster_url,
-    largeImageText: animeData.title_ukrainian,
-    smallImageKey: userData?.avatar || "logo",
-    smallImageText: userData?.username || "Anonymous",
-    startTimestamp: startTimestamp || 0,
-    endTimestamp: endTimestamp || 0,
-    buttons: [
-      {
-        label: "My Profile",
-        url: `https://anihub.in.ua/profile/${userData.username}`,
-      },
-      {
-        label: "Anime Link",
-        url: `https://anihub.in.ua/anime/${animeData.slug}-${animeData.id}`,
-      },
-    ],
+    userData,
+    animeData,
+    currentEpisode,
+    dubbingStudio,
+    videoState
   });
 }

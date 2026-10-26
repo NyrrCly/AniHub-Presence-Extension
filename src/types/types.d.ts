@@ -1,19 +1,9 @@
-export interface PresenceData {
-  details?: string;
-  state?: string;
-  type?: number;
-  largeImageKey?: string;
-  largeImageText?: string;
-  largeImageUrl?: string;
-  smallImageKey?: string;
-  smallImageText?: string;
-  smallImageUrl?: string;
-  partyId?: string;
-  partySize?: number;
-  partyMax?: number;
-  startTimestamp?: number;
-  endTimestamp?: number;
-  buttons?: { label: string; url: string }[];
+export interface DataForPresence {
+  userData: UserData;
+  animeData: AnimeData;
+  currentEpisode: string;
+  dubbingStudio: string;
+  videoState?: VideoState;
 }
 
 export interface AnimeData {

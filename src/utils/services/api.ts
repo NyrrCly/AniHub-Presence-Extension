@@ -1,4 +1,4 @@
-import type { PresenceData } from "@/types/types.js";
+import type { DataForPresence } from "@/types/types.js";
 
 export async function fetchAnimeDetails(animeId: string): Promise<any> {
   try {
@@ -10,7 +10,7 @@ export async function fetchAnimeDetails(animeId: string): Promise<any> {
   }
 }
 
-export function sendPresenceUpdate(presence: PresenceData | null) {
+export function sendPresenceUpdate(presence: DataForPresence | null) {
   browser.runtime.sendMessage({
     type: "presence_update",
     payload: presence,
