@@ -17,6 +17,6 @@ export function watchPresence(
     animeData,
     currentEpisode,
     dubbingStudio,
-    videoState
+    videoState,
   });
 }
