@@ -1,4 +1,4 @@
-import type { AnimeData, UserData, VideoState } from "@/types/types.js";
+import type { AnimeData, VideoState } from "@/types/types.js";
 import { sendPresenceUpdate } from "./services/api.js";
 
 export function clearPresence() {
@@ -6,14 +6,12 @@ export function clearPresence() {
 }
 
 export function watchPresence(
-  userData: UserData,
   animeData: AnimeData,
-  currentEpisode: string,
-  dubbingStudio: string,
+  currentEpisode: string | undefined,
+  dubbingStudio: string | undefined,
   videoState?: VideoState,
 ) {
   sendPresenceUpdate({
-    userData,
     animeData,
     currentEpisode,
     dubbingStudio,

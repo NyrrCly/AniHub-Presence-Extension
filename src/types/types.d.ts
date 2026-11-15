@@ -1,8 +1,7 @@
 export interface DataForPresence {
-  userData: UserData;
   animeData: AnimeData;
-  currentEpisode: string;
-  dubbingStudio: string;
+  currentEpisode: string | undefined;
+  dubbingStudio: string | undefined;
   videoState?: VideoState;
 }
 
@@ -35,13 +34,9 @@ export interface AnimeData {
   rating: number;
 }
 
-export interface UserData {
-  username: string;
-  avatar: string | null;
-}
-
 export interface VideoState {
   isPaused: boolean;
   currentTime: number;
   duration: number;
+  currentDate: number;
 }
