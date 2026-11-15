@@ -1,19 +1,8 @@
-export interface PresenceData {
-  details?: string;
-  state?: string;
-  type?: number;
-  largeImageKey?: string;
-  largeImageText?: string;
-  largeImageUrl?: string;
-  smallImageKey?: string;
-  smallImageText?: string;
-  smallImageUrl?: string;
-  partyId?: string;
-  partySize?: number;
-  partyMax?: number;
-  startTimestamp?: number;
-  endTimestamp?: number;
-  buttons?: { label: string; url: string }[];
+export interface DataForPresence {
+  animeData: AnimeData;
+  currentEpisode: string | undefined;
+  dubbingStudio: string | undefined;
+  videoState?: VideoState;
 }
 
 export interface AnimeData {
@@ -45,13 +34,9 @@ export interface AnimeData {
   rating: number;
 }
 
-export interface UserData {
-  username: string;
-  avatar: string | null;
-}
-
 export interface VideoState {
   isPaused: boolean;
   currentTime: number;
   duration: number;
+  currentDate: number;
 }

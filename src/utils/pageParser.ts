@@ -1,5 +1,3 @@
-import type { UserData } from "@/types/types.js";
-
 export async function extractEpisodeData(): Promise<string> {
   let episode = "-1";
   while (episode === "-1") {
@@ -22,12 +20,4 @@ export async function extractDubbingStudio(): Promise<string> {
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
   return studio;
-}
-
-export function extractUserData(): UserData {
-  const userCacheRaw = localStorage.getItem("user_cache");
-  if (userCacheRaw) {
-    return JSON.parse(userCacheRaw) as UserData;
-  }
-  throw new Error("User data not found in cache");
 }
